@@ -4,9 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    
+  
     <Button
+        android:id="@+id/btn_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:padding="16dp"
+        android:layout_margin="2dp"    
         android:text="Setting"/> 
+     
+    <TextView
+        android:id="@+id/tvOutput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        
+        android:padding="3px"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:maxLines="15"
+        android:scrollbars = "vertical"
+        android:singleLine="false"
+    />
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/gridViewObj"
+        android:numColumns="auto_fit"
+        android:gravity="center"
+        android:columnWidth="50pt"
+        android:stretchMode="columnWidth"/>
+
 </LinearLayout>
