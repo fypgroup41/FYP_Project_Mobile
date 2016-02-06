@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
         btn_send.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                AsyncTask_Type login = new S_Login("https://dl.dropboxusercontent.com/u/5324037/FYP_json.json", MainActivity.this, webpage_output, aryAdapter_list, gv, tvOutput, "page_get");
+                AsyncTask_Type login = new S_Login("http://vbacdu.ddns.net:8080/FYP_Project_Staff/activity_json?", MainActivity.this, webpage_output, aryAdapter_list, gv, tvOutput, "post");
                 login.executeAsyncTask();
             }
         });

@@ -28,4 +28,6 @@ public abstract class AsyncTask_Type {
     public abstract void doWay(String url);
 
     public abstract void executeAsyncTask();
+
+    public abstract void showRecord(Integer val);
 }

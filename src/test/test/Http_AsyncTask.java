@@ -5,7 +5,11 @@
  */
 package test.test;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,18 +20,29 @@ class Http_AsyncTask extends AsyncTask<String, Void, String> {
     AsyncTask_Type shape;
     Http_GetPost http_method = new Http_GetPost();
 
+
     public Http_AsyncTask(AsyncTask_Type shape) {
         this.shape = shape;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        shape.showRecord(1);
+      
     }
 
     //AsyncTask Process Function
     @Override
     protected String doInBackground(String... urls) {
 
-        if (shape.getHttp_method().equals("page_get")) {
-            http_method.GET(urls[0]);
+        if (shape.getHttp_method().equals("get")) {
+            try {
+                http_method.GET(urls[0]);
+            } catch (IOException ex) {
+                Logger.getLogger(Http_AsyncTask.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        if (shape.getHttp_method().equals("page_post")) {
+        if (shape.getHttp_method().equals("post")) {
             http_method.POST(urls[0]);
         }
 
@@ -38,6 +53,10 @@ class Http_AsyncTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         shape.doWay(http_method.getWebpage_output());
+  
     }
 
+    protected void onProgressUpdate(Integer... values) {
+
+    }
 }

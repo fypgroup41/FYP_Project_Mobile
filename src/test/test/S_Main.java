@@ -31,4 +31,8 @@ public class S_Main extends AsyncTask_Type {
 
     public void executeAsyncTask() {
     }
+
+    public void showRecord(Integer val) {
+
+    }
 }

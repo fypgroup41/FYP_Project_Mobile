@@ -1,5 +1,6 @@
 package test.test;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -68,6 +69,7 @@ public class S_Login extends AsyncTask_Type {
     private Http_AsyncTask task = null;
     private boolean uiCheck = false;
     private String url;
+    ProgressDialog mProgressDialog;
 
     public Http_AsyncTask getTask() {
         return task;
@@ -87,7 +89,7 @@ public class S_Login extends AsyncTask_Type {
 
     public S_Login(String url, MainActivity activity, String webpage_output, ArrayAdapter aryAdapter_list, GridView gv, TextView tvOutput, String http_method) {
         super(http_method);
-        this.url=url;
+        this.url = url;
         this.activity = activity;
         this.webpage_output = webpage_output;
         this.aryAdapter_list = aryAdapter_list;
@@ -136,6 +138,15 @@ public class S_Login extends AsyncTask_Type {
         } catch (JSONException ex) {
             tvOutput.setText(ex.getMessage());
         }
+
+        mProgressDialog.dismiss();
+
+    }
+
+    public void showRecord(Integer val) {
+        mProgressDialog = ProgressDialog.show(activity, "", "Downloading...", true);
+        mProgressDialog.setCancelable(false);
+        //  tvOutput.setText(val);
     }
 
 }

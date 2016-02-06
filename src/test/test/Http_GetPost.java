@@ -6,24 +6,18 @@
 package test.test;
 
 import android.util.Log;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.codec.CharEncoding;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 
 /**
  *
@@ -41,53 +35,54 @@ public class Http_GetPost {
 
     String webpage_output;
 
-    public void GET(String url) {
-        InputStream inputStream = null;
+    public void GET(String url) throws IOException {
+        
         String result = "";
+        URL url2 = new URL(url);
+        HttpURLConnection urlConnection = (HttpURLConnection) url2.openConnection();
         try {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
-            inputStream = httpResponse.getEntity().getContent();
-            if (inputStream != null) {
-                result = convertInputStreamToString(inputStream);
-                webpage_output = result;
-            } else {
-                result = "Did not work!";
-            }
+
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            result = convertInputStreamToString(in);
+            webpage_output = result;
+
         } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
+        } finally {
+            urlConnection.disconnect();
         }
     }
 
     public void POST(String url) {
-
-        HttpPost httpRequest = new HttpPost(url);
-
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("id", "1"));
+        HttpURLConnection conn = null;
         try {
+            URL mURL = new URL(url);
+            conn = (HttpURLConnection) mURL.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setReadTimeout(5000);
+            conn.setConnectTimeout(10000);
+            conn.setDoOutput(true);
 
-            httpRequest.setEntity(new UrlEncodedFormEntity(params, CharEncoding.UTF_8));
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpResponse httpResponse = httpclient.execute(httpRequest);
-            webpage_output = httpResponse.getStatusLine().getStatusCode() + "";
+            String data = "id=2";
+            OutputStream out = conn.getOutputStream();
+            out.write(data.getBytes());
+            out.flush();
+            out.close();
 
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+            int responseCode = conn.getResponseCode();
+            if (responseCode == 200) {
 
-                webpage_output = EntityUtils.toString(httpResponse.getEntity());
-
-            } else {
-                Log.e("n", "b");
+                InputStream is = conn.getInputStream();
+                String result = convertInputStreamToString(is);
+                webpage_output = result;
             }
-        } catch (ClientProtocolException e) {
-
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-
-            e.printStackTrace();
 
         } catch (Exception e) {
-
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.disconnect();// 关闭连接
+            }
         }
 
     }
