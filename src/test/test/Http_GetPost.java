@@ -36,7 +36,7 @@ public class Http_GetPost {
     String webpage_output;
 
     public void GET(String url) throws IOException {
-        
+
         String result = "";
         URL url2 = new URL(url);
         HttpURLConnection urlConnection = (HttpURLConnection) url2.openConnection();
@@ -101,5 +101,18 @@ public class Http_GetPost {
         inputStream.close();
         return result;
 
+    }
+
+    public String processData(String data) {
+        char[] temp = data.toCharArray();
+        data = "";
+        for (int i = 0; i < temp.length; i++) {
+            if (temp[i] == ' ') {
+                data += "%20";
+            } else {
+                data += temp[i];
+            }
+        }
+        return data;
     }
 }
