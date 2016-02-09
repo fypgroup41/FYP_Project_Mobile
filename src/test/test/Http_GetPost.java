@@ -14,9 +14,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.codec.CharEncoding;
 
 /**
@@ -36,52 +39,77 @@ public class Http_GetPost {
     String webpage_output;
 
     public void GET(String url) throws IOException {
-
         String result = "";
         URL url2 = new URL(url);
         HttpURLConnection urlConnection = (HttpURLConnection) url2.openConnection();
+        int code = urlConnection.getResponseCode();
         try {
+            if (code == 404) {
+                webpage_output = null;
+            } else {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                result = convertInputStreamToString(in);
+                webpage_output = result;
 
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            result = convertInputStreamToString(in);
-            webpage_output = result;
-
+            }
         } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         } finally {
             urlConnection.disconnect();
         }
+
     }
 
-    public void POST(String url) {
-        HttpURLConnection conn = null;
+    public void POST(String url) throws IOException {
+        HttpURLConnection urlConnection = null;
         try {
-            URL mURL = new URL(url);
-            conn = (HttpURLConnection) mURL.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setReadTimeout(5000);
-            conn.setConnectTimeout(10000);
-            conn.setDoOutput(true);
-
+            URL url2 = new URL(url);
+            urlConnection = (HttpURLConnection) url2.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setReadTimeout(5000);
+            urlConnection.setConnectTimeout(10000);
+            urlConnection.setDoOutput(true);
             String data = "id=2";
-            OutputStream out = conn.getOutputStream();
+            OutputStream out = urlConnection.getOutputStream();
             out.write(data.getBytes());
             out.flush();
             out.close();
 
-            int responseCode = conn.getResponseCode();
+            int responseCode = urlConnection.getResponseCode();
+
             if (responseCode == 200) {
 
-                InputStream is = conn.getInputStream();
+                InputStream is = urlConnection.getInputStream();
                 String result = convertInputStreamToString(is);
                 webpage_output = result;
+
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (conn != null) {
-                conn.disconnect();// 关闭连接
+            urlConnection.disconnect();
+        }
+
+    }
+
+    public void http_getPost_Entrance(String url, String way) {
+        if (way.equals("get")) {
+            try {
+
+                this.GET(url);
+
+            } catch (IOException ex) {
+                Logger.getLogger(Http_AsyncTask.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (way.equals("post")) {
+            try {
+
+                this.POST(url);
+
+            } catch (IOException ex) {
+                Logger.getLogger(Http_AsyncTask.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

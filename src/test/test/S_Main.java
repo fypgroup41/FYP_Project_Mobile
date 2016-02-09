@@ -5,6 +5,8 @@
  */
 package test.test;
 
+import java.net.HttpURLConnection;
+
 /**
  *
  * @author test
@@ -26,7 +28,7 @@ public class S_Main extends AsyncTask_Type {
         this.activity = activity;
     }
 
-    public void doWay(String url) {
+    public void doWay(String output) {
     }
 
     public void executeAsyncTask() {

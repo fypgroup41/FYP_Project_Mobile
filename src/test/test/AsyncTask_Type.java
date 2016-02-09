@@ -5,6 +5,8 @@
  */
 package test.test;
 
+import java.net.HttpURLConnection;
+
 /**
  *
  * @author test
@@ -25,7 +27,7 @@ public abstract class AsyncTask_Type {
         this.http_method = http_method;
     }
 
-    public abstract void doWay(String url);
+    public abstract void doWay(String output);
 
     public abstract void executeAsyncTask();
 

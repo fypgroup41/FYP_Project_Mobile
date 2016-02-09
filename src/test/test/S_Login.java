@@ -5,8 +5,12 @@ import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -111,16 +115,29 @@ public class S_Login extends AsyncTask_Type {
         }
     }
 
-    public void doWay(String url) {
-        JSONArray array;
+    public void doWay(String server_output) {
+
+        JSONArray array = null;
         List<String> list_output = new ArrayList<String>();
         String output = "";
-        try {
-            array = new JSONArray(url);
+        if (output != null) {
+            try {
+                array = new JSONArray(server_output);
+            } catch (JSONException ex) {
+                Logger.getLogger(S_Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
             for (int n = 0; n < array.length(); n++) {
                 for (int m = 0; m < 3; m++) {
-                    output += " " + array.getJSONArray(n).get(m).toString() + "\n ";
-                    list_output.add(array.getJSONArray(n).get(m).toString());
+                    try {
+                        output += " " + array.getJSONArray(n).get(m).toString() + "\n ";
+                    } catch (JSONException ex) {
+                        Logger.getLogger(S_Login.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    try {
+                        list_output.add(array.getJSONArray(n).get(m).toString());
+                    } catch (JSONException ex) {
+                        Logger.getLogger(S_Login.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 output += "\n";
             }
@@ -135,8 +152,8 @@ public class S_Login extends AsyncTask_Type {
             gv.setAdapter(aryAdapter_list);
             tvOutput.setText(output);
 
-        } catch (JSONException ex) {
-            tvOutput.setText(ex.getMessage());
+        } else {
+            tvOutput.setText("Page Not Found 404");
         }
 
         mProgressDialog.dismiss();
