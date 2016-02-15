@@ -3,11 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test.test;
+package fyp.main;
 
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
+import upload.lib.UploadVideo;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -143,4 +150,11 @@ public class Http_GetPost {
         }
         return data;
     }
+
+    public void abcd() {
+        UploadVideo a = new UploadVideo();
+
+        int reponse = a.upLoad2Server(new File(Environment.getExternalStorageDirectory() + "/DCIM/Camera/a.mp4").toString());
+    }
+
 }

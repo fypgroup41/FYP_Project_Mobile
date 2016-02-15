@@ -1,10 +1,14 @@
-package test.test;
+package fyp.main;
 
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
+import upload.lib.UploadVideo;
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -114,8 +118,10 @@ public class S_Login extends AsyncTask_Type {
             }
         }
     }
+    //NewClass1 a = new NewClass1();
 
     public void doWay(String server_output) {
+        /*        tvOutput.setText(Environment.getExternalStorageDirectory() + "/DCIM/Camera/a.mp4");*/
 
         JSONArray array = null;
         List<String> list_output = new ArrayList<String>();

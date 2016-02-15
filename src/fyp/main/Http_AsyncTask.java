@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test.test;
+package fyp.main;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -37,9 +37,11 @@ class Http_AsyncTask extends AsyncTask<String, Void, String> {
 
         if (asyncTask.getHttp_method().equals("get")) {
             http_getPost.http_getPost_Entrance(urls[0], "get");
+            /*http_getPost.abcd();*/
         }
         if (asyncTask.getHttp_method().equals("post")) {
             http_getPost.http_getPost_Entrance(urls[0], "post");
+            /*            http_getPost.abcd();*/
         }
 
         return null;
